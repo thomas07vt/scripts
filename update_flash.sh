@@ -23,7 +23,7 @@ downloadFlash(){
   # Find Download Link from static URL
   dlink=$(curl -v --silent "https://get.adobe.com/flashplayer/download/?installer=FP_11.2_for_other_Linux_64-bit_(.tar.gz)_-_NPAPI&standalone=1" 2>&1 \
     | grep "fpdownload.adobe.com" \
-    | sed $'s/^.*location.href = \'//' | sed $'s/\';".*//' \
+    | sed $'s/^.*location.href = \'//' | sed $'s/\';".*//'
   )
   echo "Download Link found: $dlink"
 
