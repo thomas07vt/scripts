@@ -21,7 +21,7 @@
 
 downloadFlash(){
   # Find Download Link from static URL
-  dlink=$(curl -v --silent "https://get.adobe.com/flashplayer/download/?installer=FP_11.2_for_other_Linux_64-bit_(.tar.gz)_-_NPAPI&standalone=1" 2>&1 \
+  dlink=$(curl -v -L --silent "https://get.adobe.com/flashplayer/download/?installer=FP_11.2_for_other_Linux_64-bit_(.tar.gz)_-_NPAPI&sType=2723&standalone=1" 2>&1 \
     | grep "fpdownload.adobe.com" \
     | sed $'s/^.*location.href = \'//' | sed $'s/\';".*//'
   )
