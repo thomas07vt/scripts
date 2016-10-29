@@ -20,12 +20,25 @@
 # https://fpdownload.adobe.com/get/flashplayer/pdc/11.2.202.632/install_flash_player_11_linux.x86_64.tar.gz
 
 downloadFlash(){
+  # Find sType from static URL
+  sType=$(curl -v -L --silent 'https://get.adobe.com/flashplayer/' 2>&1 \
+    | grep 'sType' \
+    | sed $'s/^.*sType: "//' \
+    | sed $'s/",//'
+  )
+
   # Find Download Link from static URL
-  dlink=$(curl -v -L --silent "https://get.adobe.com/flashplayer/download/?installer=FP_11.2_for_other_Linux_64-bit_(.tar.gz)_-_NPAPI&sType=2723&standalone=1" 2>&1 \
+  dlink=$(curl -v -L --silent "https://get.adobe.com/flashplayer/download/?installer=FP_11.2_for_other_Linux_64-bit_(.tar.gz)_-_NPAPI&sType=$sType&standalone=1" 2>&1 \
     | grep "fpdownload.adobe.com" \
-    | sed $'s/^.*location.href = \'//' | sed $'s/\';".*//'
+    | sed $'s/^.*location.href = \'//' \
+    | sed $'s/\';".*//'
   )
   echo "Download Link found: $dlink"
+
+  if [ -z "$dlink" ]; then
+    echo 'No download link found! Aborting'
+    exit 1
+  fi
 
   # Download to /tmp
   curl -o /tmp/flash.tar.gz $dlink
